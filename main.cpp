@@ -2,7 +2,6 @@
 #include <ratio>
 #include <iostream>
 #include <random>
-#include <fstream> 
 
 bool make_thread = true;
 ThreadPool pool;
@@ -11,7 +10,7 @@ void quickSort(int*& arr, int low, int high)
 {
     int mid, count;
     int l = low, h = high;
-    mid = arr[(l + h) / 2]; //вычисление опорного элемента
+    mid = arr[(l + h) / 2]; //ГўГ»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г®ГЇГ®Г°Г­Г®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ 
     do
     {
         while (arr[l] < mid)
@@ -19,7 +18,7 @@ void quickSort(int*& arr, int low, int high)
         while (arr[h] > mid)
             h--;
        
-        if (l <= h) //перестановка элементов
+        if (l <= h) //ГЇГҐГ°ГҐГ±ГІГ Г­Г®ГўГЄГ  ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў
         {
             count = arr[l];
             arr[l] = arr[h];
@@ -54,27 +53,18 @@ void quickSort(int*& arr, int low, int high)
 int main()
 {
     srand(time(nullptr));
-    long arr_size = 100000;
+    long arr_size = 100000000;
     int* array = new int[arr_size];
     for (long i = 0; i < arr_size; i++) {
         array[i] = rand() % 10000;
     }
     
-    // многопоточный запуск
+    // Г¬Г­Г®ГЈГ®ГЇГ®ГІГ®Г·Г­Г»Г© Г§Г ГЇГіГ±ГЄ
     std::cout << "Multi thread" << std::endl;
     auto begin = std::chrono::system_clock::now();
     quickSort(array, 0, arr_size - 1);
     auto end = std::chrono::system_clock::now();
     std::cout << "The time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " milliseconds" << std::endl << std::endl;
-
-    std::ofstream data0 = std::ofstream("data0.txt");
-    if (data0.is_open()) // проверяем, что файл успешно открыт
-    {
-        for (int i = 0; i < arr_size; i++)
-            data0 << array[i] << '\n'; // записываем в файл
-        data0.close(); // закрываем файл
-    }
-    
 
     for (long i = 0; i < arr_size - 1; i++) {
         if (array[i] > array[i + 1]) {
@@ -86,22 +76,14 @@ int main()
     for (long i = 0; i < arr_size; i++) {
         array[i] = rand() % 10000;
     }
-    // однопоточный запуск
+    // Г®Г¤Г­Г®ГЇГ®ГІГ®Г·Г­Г»Г© Г§Г ГЇГіГ±ГЄ
     make_thread = false;
     std::cout << "Single thread" << std::endl;
     begin = std::chrono::system_clock::now();
     quickSort(array, 0, arr_size - 1);
     end = std::chrono::system_clock::now();
     std::cout << "The time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " milliseconds" << std::endl << std::endl;
-    
-    std::ofstream data1 = std::ofstream("data1.txt");
-    if (data1.is_open()) // проверяем, что файл успешно открыт
-    {
-        for (int i = 0; i < arr_size; i++)
-            data1 << array[i] << '\n'; // записываем в файл
-        data1.close(); // закрываем файл
-    }
-    
+        
     delete[] array;
     return 0;
 }
