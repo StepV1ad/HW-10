@@ -11,7 +11,7 @@ void quickSort(int*& arr, int low, int high)
 {
     int mid, count;
     int l = low, h = high;
-    mid = arr[(l + h) / 2]; //РІС‹С‡РёСЃР»РµРЅРёРµ РѕРїРѕСЂРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+    mid = arr[(l + h) / 2]; //вычисление опорного элемента
     do
     {
         while (arr[l] < mid)
@@ -19,7 +19,7 @@ void quickSort(int*& arr, int low, int high)
         while (arr[h] > mid)
             h--;
        
-        if (l <= h) //РїРµСЂРµСЃС‚Р°РЅРѕРІРєР° СЌР»РµРјРµРЅС‚РѕРІ
+        if (l <= h) //перестановка элементов
         {
             count = arr[l];
             arr[l] = arr[h];
@@ -57,7 +57,7 @@ int main()
         array[i] = rand() % 10000;
     }
     
-    // РјРЅРѕРіРѕРїРѕС‚РѕС‡РЅС‹Р№ Р·Р°РїСѓСЃРє
+    // многопоточный запуск
     std::cout << "Multi thread" << std::endl;
     auto begin = std::chrono::system_clock::now();
     quickSort(array, 0, arr_size - 1);
@@ -65,11 +65,11 @@ int main()
     std::cout << "The time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " milliseconds" << std::endl << std::endl;
 
     std::ofstream data0 = std::ofstream("data0.txt");
-    if (data0.is_open()) // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ С„Р°Р№Р» СѓСЃРїРµС€РЅРѕ РѕС‚РєСЂС‹С‚
+    if (data0.is_open()) // проверяем, что файл успешно открыт
     {
         for (int i = 0; i < arr_size; i++)
-            data0 << array[i] << '\n'; // Р·Р°РїРёСЃС‹РІР°РµРј РІ С„Р°Р№Р»
-        data0.close(); // Р·Р°РєСЂС‹РІР°РµРј С„Р°Р№Р»
+            data0 << array[i] << '\n'; // записываем в файл
+        data0.close(); // закрываем файл
     }
 
     for (long i = 0; i < arr_size - 1; i++) {
@@ -82,7 +82,7 @@ int main()
     for (long i = 0; i < arr_size; i++) {
         array[i] = rand() % 10000;
     }
-    // РѕРґРЅРѕРїРѕС‚РѕС‡РЅС‹Р№ Р·Р°РїСѓСЃРє
+    // однопоточный запуск
     make_thread = false;
     std::cout << "Single thread" << std::endl;
     begin = std::chrono::system_clock::now();
@@ -91,11 +91,11 @@ int main()
     std::cout << "The time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " milliseconds" << std::endl << std::endl;
     
     std::ofstream data1 = std::ofstream("data1.txt");
-    if (data1.is_open()) // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ С„Р°Р№Р» СѓСЃРїРµС€РЅРѕ РѕС‚РєСЂС‹С‚
+    if (data1.is_open()) // проверяем, что файл успешно открыт
     {
         for (int i = 0; i < arr_size; i++)
-            data1 << array[i] << '\n'; // Р·Р°РїРёСЃС‹РІР°РµРј РІ С„Р°Р№Р»
-        data1.close(); // Р·Р°РєСЂС‹РІР°РµРј С„Р°Р№Р»
+            data1 << array[i] << '\n'; // записываем в файл
+        data1.close(); // закрываем файл
     }
     
     delete[] array;

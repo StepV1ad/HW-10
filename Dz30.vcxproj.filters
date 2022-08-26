@@ -26,5 +26,8 @@
     <ClInclude Include="ThreadPool.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="BlockedQueue.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
