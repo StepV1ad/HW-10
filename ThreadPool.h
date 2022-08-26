@@ -1,33 +1,27 @@
 #pragma once
+#include "BlockedQueue.h"
 #include <vector>
 #include <functional>
 #include <thread>
 #include <future>
-#include <queue>
-#include <mutex>
-#include <condition_variable>
-using namespace std;
 
-typedef function<void()> task_type;
+typedef std::packaged_task<void()> task_type;
 typedef void (*FuncType) (int*&, int, int);
 typedef future<void> res_type;
 
 class ThreadPool 
 {
 public:
-    /*ThreadPool();
+    ThreadPool();
+    ~ThreadPool();
     void start();
-    void stop();*/
+    void stop();
     res_type push_task(FuncType f, int*& arr, int low, int high);
-    void threadFunc();
+    void threadFunc(int qindex);
+    void pending_task();
 private:
-    struct TaskWithPromise {
-        task_type task;
-        promise<void> prom;
-    };
+    int m_thread_count;
     vector<thread> m_threads;
-    queue<TaskWithPromise> m_task_queue;
-    mutex m_locker;
-    condition_variable m_event_holder;
-    volatile bool m_work;
+    vector<BlockedQueue<task_type>> m_thread_queues;
+    int m_index;
 };
